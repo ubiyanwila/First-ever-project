@@ -1,0 +1,213 @@
+---
+title: "Group Project 1"
+author: "Uddaka Biyanwila"
+date: "24/08/2018"
+SID: 450229082
+output:
+  html_document: default
+  pdf_document: default
+---
+```{r}
+#Using dataset MPI_subnational and "excel subnational" (for research question 3)
+MPI_subnational = read.csv("subnationaldata.csv")
+excel_subnational = read.csv("excel_subnational.csv")
+
+
+#load libraries
+library(tidyverse)
+library(ggplot2)
+
+```
+```{r}
+                
+```
+
+
+# Executive Summary
+The MPI uses indicators to measure three dimensions of poverty: education, health and living standard in 110 developed countries. The MPI index not only covers whether each individual country is poor, but how they are poor and the combinations of which the region is poor. The global MPI was developed by Oxford Poverty & Human Development Initiative - an economic research centre within the University of Oxford. This dataset was also done in conjunction with the United Nations Development Program (UNDP). The Global MPI  was updated in January 2018 and now covers 104 countries in total, which are home to 76% of the world's population or 5.5 billion people. Of this proportion, 26.5 per cent of people (1.46 billion) are identified as multidimensionally poor (Alkire and Kanangaratnam 2018). 
+
+
+This report firstly assessed the globe and found out which continent was overall the poorest. From the data we found that Sub-Saharan Africa is the poorest region by a significant margin. From there we found which was the poorest country within the region, which was the country Chad. From there we analysed the regional MPI of the country, comparing both the rural and urban areas to find the perentage incidence  of poverty within the country of Chad( 41.4% and 45.2%). Of this we analysed the regional MPI index of the country and found that Lac was the poorest subnational region. Lac was considerably poor in areas of Electricity, Sanitation and Cooking fuel. 
+
+
+# Full Report
+## Country profile
+*Country*: The Republic of Chad      
+*Region*:Sub-sahara Africa     
+*Survey Type*:DHS      
+*Time Frame*: Winter 2017/2018
+ 
+The MPI assesses poverty at the individual level. If someone is deprived in a third or more of ten indicators, the global index identifies them as ‘MPI poor', and  establish the extent – or intensity – of their poverty is measured by the number of deprivations ( out of the 10 indicators) they are experiencing.
+
+
+- If a person is deprived in *20-33.3%* of the weighted indicators mean they are  *‘Vulnerable to Poverty’* (Alkire, Robles 2017)
+
+Each person is identified as deprived or non-deprived in each indicator based on a deprivation cut off  of 33.33%. Those whose score above  the cut-off point are listed as multidimensional poor. This multidimensional poor then further divided into 2 sub-categories to further detailing the poverty type.
+
+
+- If a person is deprived in *50% or more*, of the weighted indicators mean they are *‘Severe Poverty’*.(Alkire, Robles 2017)
+
+-Those who is deprived in one third or more of the weighted indicators mean they are *‘Destitute’*  meaning  they are suffering from extreme poverty. (Alkire, Robles 2017)
+
+
+## Inital Data Analysis
+The global Multidimensonal Poverty Index (MPI) is a multi-dimensional measure of poverty that covers a variety of factors of over 100 developing countries. The MPI looks at extreme poverty in areas of education, health and living standards; of these categories is a list of subcategories that include years of schooling, child mortality rates and electricity standards to provide a holistic approach to measuring poverty. The MPI creates a comprehensive picture of people living in poverties across regions, countries, ethnicities as well as within households and communities.
+
+This data comes from a valid and reputable source as it is a dataset delivered from the economic research centre within the University of Oxford by research. The dataset was released and edited 6 months ago, so it is updated with the latest information on the MPI of each country.
+
+The dataset contains 1000 observations of 11 variables (excel_subnational) and is classed as a "data.frame". The variables include an ISO country code to list the countries involved in the MPI dataset, the full name of the country, the sub-national region of the country - which are the states and regions individually assessed for their MPI score; the World region, which analyses which continent geographically each country is from; the MPI National scale which produces the MPI of each country holistically combining both urban and rural MPI's and the MPI Regional which is calculated by multiplying the Headcount Ratio Regional and Intensity of deprivation regional (MPI = H x I). The Headcount ratio regional calculates the percentage of population listed as poor in that region, whilst the Intensity of deprivation regional calculates the average distance below the poverty line the region those listed as poor.
+
+The stakeholders in this dataset include the people living in poverty, the government of each respective nation in the MPI index, policy makers, economists and local businesses. The people that can also use the MPI include non-government organisations, provate sector institutions, academics and researchers and civil society groups. The MPI shows all the deprivations and highlights which deprivation combinations from the ten variables are most common to allow stakeholders to utilise their resources to address their particular needs.
+
+#Domain Knowledge:
+- Research papers from the following websites:
+![] https://ophi.org.uk/multidimensional-poverty-index/
+![]https://ophi.org.uk/multidimensional-poverty-index/global-mpi-2017/mpi-data/
+![] www.dataforall.org/dashboard/ophi/index.php/mpi/download_brief_files/TCD - Data for Chad
+The above website shows all the data tables for Winter 2017/18, and where we got our data from. The data is recently updated to include 104 countries.
+
+![](https://www.ophi.org.uk/wp-content/uploads/Ten-Indic-2016-MK.jpg) (Alkire & Robles, 2017)
+
+
+![](https://images.ctfassets.net/lj1cf6ogg6zv/1z2wYZ23sEWMmAMs8w6QOu/9f41688b425b0250cb3bde002427c5db/SOUP_2.png) (Alkire & Robles, 2017)
+
+```{r}
+#Summary of the data
+summary(MPI_subnational)
+
+#Quick look at top 5 rows of the data
+head(MPI_subnational)
+
+#Size of data
+# For MPI_subnational there are 1000 observations (subnational regions) and 8 variables (MPI indicators)
+dim(MPI_subnational)
+
+#R's classification of data
+class(MPI_subnational)
+
+```
+
+
+## Research Question 1: Which country is the poorest based on the MPI scale?
+```{r}
+p = ggplot(MPI_subnational, aes_string(x=MPI_subnational$World.region, y=MPI_subnational$MPI.Index..MPI...H.A....Range.0.to.1))
+p + geom_col() + coord_flip()
+
+p = ggplot(MPI_subnational, aes_string(x=MPI_subnational$World.region, y=MPI_subnational$MPI.Index..MPI...H.A....Range.0.to.1))
+p +  geom_boxplot() +coord_flip()
+
+```
+
+
+```{r}
+# Isolated the Sub-saharan dataset and used it for graphical summary
+ssh = read.csv("ssh.csv")
+p = ggplot(ssh, aes_string(x=ssh$Country, y=ssh$Multidimensional.Poverty.Index..MPI..of.the.country))
+p + geom_col() + coord_flip()
+```
+
+
+The region of Sub-Saharan Africa is considered on the MPI scale the poorest region. The poorest country based on the MPI index graph above is Chad.
+
+
+## Research Question 2:analyse the regional MPI index of that country. 
+
+The Country Chad has the highest MPI index meaning that their poverty rate is highest among the sub-sahara Africa region.To further investigate as why and how Chad's population is poor, category that contribute to Chad becoming the Poorest nation.
+
+In addition to providing data on multidimensional poverty at the national level, the MPI can also be broken down by sub-national regions to show disparities in poverty within countries. This analysis can be easily performed when the survey used for the MPI is representative at the sub-national level. (Oxford Poverty and Human Development Initiative,2017)
+
+```{r}
+original=read.csv("subnational.csv")
+head(original)
+```
+
+This table reports the Multidimensional Poverty Index, its two components - the Headcount Ratio and the Intensity of Deprivation among the poor - and other indicators of multidimensional poverty more than 1000 regions of more than 70 countries. The final  columns show any missing indicators that might affect/ contribute to the information of the findings.
+
+From this table, all the data relevant to Chad is further extract into a new set for details examination of the MPI in regions of Chad exclusively 
+```{r}
+city=read.csv("Chad_21.csv")
+city 
+```
+```{r}
+names(city)
+```
+
+
+The following table shows the MPI at the Sub-national Level value with the following measurement:
+
+* MPI is calculate by including the **the incidence of poverty (H)** and the **average intensity of deprivation across the poor (A)**. 
+
+*Using the measurement mentioned as the baseline/cut-off point for comparision, the seventh and eighth columns present the percentage of the population Vulnerable to Poverty and living in Severe Poverty, respectively. The ninth column presents the percentage of the population identified as Destitute, or deprived according to more extreme indicators 
+
+The bar grapgh below 
+The MPI assesses poverty at the individual level. If someone is deprived in a third or more of ten indicators, the global index identifies them as ‘MPI poor', and the extent – or intensity – of their poverty is measured by the number of deprivations they are experiencing.
+
+```{r}
+barplot(city$MPI..HxA.[order(city$MPI..HxA.)], names = city$Sub.national.region[order(city$MPI..HxA.)], 
+        xlab = "City", ylab = "MPI", main = "A.MPI Regional of Chad", las = 2)
+                                   
+```
+```{r}
+barplot(city$Intensity.of.deprivation.among.the.poor...A..[order(city$MPI..HxA.)], names = city$Sub.national.region[order(city$MPI..HxA.)], 
+        xlab = "City", ylab = "Intensity of Deprivation in %", main = " B.Regional Intensity of deprivationof Chad ",las=2)
+```
+
+From Both Table A and B we know that Lac region is the the Poorest region of Chad. Further information is extract to prove that out of 100% population of Lac, 50% of the population is in servere poverty (scoring 50% in the 10 weighted indicator that determin MPI) and the remaining 50% is Destitutude to Poverty (scoring 50% more than in the 10 weighted indicator that determin MPI).
+
+```{r}
+slices <- c(0.9,92.7,91.9) 
+lbls <- c("Vulnerable to poverty","Population in severe poverty","Destitutes (% Population)")
+pct <- round(slices/sum(slices)*100)
+lbls <- paste(lbls, pct) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(slices,labels = lbls, col=rainbow(length(lbls)),
+  	main="Poverty Composition of Lac")
+
+## Research Question 3 
+```{r}
+
+head(excel_subnational)
+```
+
+
+# Research Question 3:Which factors contribute the most to Chad's poverty ?
+From the excel_subnational dataset, it illustrates that living standards is the most relevant factor that has contributed to Chad's poverty. 41.4% of the population have living standards that are destitute in the urban area of Chad. However, in the rural areas of Chad, the percentage contributino of deprivation of living standard to overall poverty is 45.2%. 
+
+In Lac, which is the poorest city in Chad, the percentage contribution of deprivation of living standard to overall poverty is 39.2%. Within the main category of living standard in Lac, Electricity, Improved sanitation and Cooking fuel are the top 3 categories that have been proven to be below the poverty line. In conclusion, Electricity, Improved sanitation and Cooking fuel are the factors which contribute the most to Chad's poverty. 
+
+
+
+#Conclusions
+Out of all the continents globally; Sub-Saharan Africa is considered to have the greatest percentage of population living in poverty using the MPI scale. From the data, Chad is considred to be the poorest region taking into account the MPI National scale which is calculated using the percentage of people who are MPI poor (H) and the average intensiy of MPI poverty across the poor (A). This data is comparative to the hypothesis the group had that Africa would be one of the worst affected in terms of poverty. Chad is considered poor as they are deprived in at least a third of the weighted indicators and has one of the highest percentages in terms of the intensity of deprivation in each of the ten indicators mentioned. Within the ocuntry of Chad, the subnational region of Lac is the poorest city in the country with impoved sanitation, electricity and cooking fuel being the three main factors in which the city is poor. 
+
+
+## Links
+For more comprehensive analysis of MPI: [Interesting Web Page](https://www.kaggle.com/pcharambira/analysis-of-multidimensional-poverty-measures)
+ 
+
+## References
+Kaggle.com. (2018). Multidimensional Poverty Measures | Kaggle. [online] Available at: https://www.kaggle.com/ophi/mpi [Accessed 11 Aug. 2018].
+
+Alkire, S. and Robles, G. (2017). “Multidimensional Poverty Index Summer 2017: Brief methodological note and results.” OPHI Methodological Note 44, University of Oxford.
+
+Alkire, S. and Santos, M. E. (2010). “Acute multidimensional poverty: A new index for developing countries.” OPHI Working Papers 38, University of Oxford.
+
+Alkire, S. Jindra, C. Robles, G. and Vaz, A. (2017). ‘Multidimensional Poverty Index – Summer 2017: brief methodological note and results’. OPHI MPI Methodological Notes No. 44, Oxford Poverty and Human Development Initiative, University of Oxford.
+
+Charambira, P. (2018). Analysis of Multidimensional Poverty Measures | Kaggle. Retrieved from https://www.kaggle.com/pcharambira/analysis-of-multidimensional-poverty-measures
+
+Alkire, S. and Kanagaratnam, U. (2018)
+Multidimensional Poverty Index Winter 2017-18: Brief methodological
+note and results.Oxford Poverty and Human Development Initiative, University of Oxford, OPHI Methodological Notes 45.
+
+Oxford Poverty and Human Development Initiative (2017). “Chad Country Briefing”, Multidimensional Poverty Index Data Bank. OPHI, University of Oxford. 
+Available at: www.ophi.org.uk/multidimensional-poverty-index/mpi-country-briefings/.
+
+MPI methodology, see Alkire, S. and Robles, G. (2017), “Multidimensional Poverty Index 2017: BriefMethodological Note and Results”. Available at: www.ophi.org.uk/multidimensional-poverty-index /.
+
+
+
+## Personal reflection on group work
+- The group work was very enjoyable, I thoroughly enjoyed extractng the dataset and finding conclusions and patterns with the data. 
+
+
